@@ -4,6 +4,7 @@
         "name": "helmets_app",
         "version": "1.0",
         "description": "Default description for package yolov5s_pt_app",
+        "assets": [],
         "interfaces": [
             {
                 "name": "helmets_app_interface",
