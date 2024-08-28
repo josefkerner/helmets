@@ -7,9 +7,9 @@
         "assets": [],
         "interfaces": [
             {
-                "name": "helmets_app_interface",
+                "name": "interface",
                 "category": "business_logic",
-                "asset": "helmets_app_asset",
+                "asset": "helmets_app",
                 "inputs": [
                     {
                         "name": "video_in",
