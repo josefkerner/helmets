@@ -1,13 +1,15 @@
 import cv2, math
 
-# start webcam
-cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480)
+
 
 
 from ultralytics import YOLO
 model = YOLO("/panorama/best.pt")
+
+# start webcam
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)
+cap.set(4, 480)
 #model = YOLO("models/hemletYoloV8_100epochs.pt")
 
 print(model.names)
