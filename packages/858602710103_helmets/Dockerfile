@@ -1,11 +1,3 @@
-FROM public.ecr.aws/panorama/panorama-application:1.2.0-py3.8
-WORKDIR /panorama
-COPY . .
-RUN apt-get update -y
+FROM public.ecr.aws/v3x9p5m3/davesmn-panorama-pytorch:latest
 
-RUN apt-get update && apt-get install -y python3-pip
-
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install --no-cache-dir torch==1.13.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-RUN python3 -m pip install --no-cache-dir torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-RUN python3 -m pip install --no-cache-dir opencv-python
+RUN python -m pip install --upgrade pip
