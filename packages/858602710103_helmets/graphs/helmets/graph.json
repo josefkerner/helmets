@@ -52,15 +52,15 @@
         "edges": [
             {
                 "producer": "front_door_camera.video_out",
-                "consumer": "yolov5s_pt_app_node.video_in"
+                "consumer": "helmets_app_node.video_in"
             },
             {
-                "producer": "yolov5s_pt_app_node.video_out",
+                "producer": "helmets_app_node.video_out",
                 "consumer": "output_node.video_in"
             },
             {
                 "producer": "model_batch_size",
-                "consumer": "yolov5s_pt_app_node.model_batch_size"
+                "consumer": "helmets_app_node.model_batch_size"
             }
         ]
     }
