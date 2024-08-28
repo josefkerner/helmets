@@ -1,4 +1,4 @@
-FROM public.ecr.aws/panorama/panorama-application:1.2.0-py3.8
+FROM python:3.9-slim
 WORKDIR /panorama
 COPY . .
 RUN apt-get update -y
