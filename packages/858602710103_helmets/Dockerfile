@@ -1,8 +1,7 @@
 FROM public.ecr.aws/panorama/panorama-application:1.2.0-py3.8
-
-
 WORKDIR /panorama
 COPY . .
+RUN apt-get update -y
 
 RUN apt-get update && apt-get install -y python3-pip
 
