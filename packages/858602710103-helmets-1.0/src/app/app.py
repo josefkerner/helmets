@@ -15,7 +15,7 @@ classNames = [
 
 
 from ultralytics import YOLO
-model = YOLO("/panorama/best.pt")
+model = YOLO("/panorama/app/best.pt")
 
 class ObjectDetectionApp(p.node):
 
