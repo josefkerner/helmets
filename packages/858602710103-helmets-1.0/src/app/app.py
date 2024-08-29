@@ -94,10 +94,9 @@ class ObjectDetectionApp(p.node):
             input_frames = self.inputs.video_in.get()
             return input_frames
 
-if __name__ == '__main__':
-    try:
-        app = ObjectDetectionApp()
-        app.run()
-    except Exception as err:
-        log.exception('App did not Start {}'.format(err))
-        sys.exit(1)
+try:
+    app = ObjectDetectionApp()
+    app.run()
+except Exception as err:
+    log.exception('App did not Start {}'.format(err))
+    sys.exit(1)
