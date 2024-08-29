@@ -1,7 +1,7 @@
 {
     "nodePackage": {
         "envelopeVersion": "2021-01-01",
-        "name": "helmets_app",
+        "name": "helmets",
         "version": "1.0",
         "description": "Default description for package yolov5s_pt_app",
         "assets": [],
@@ -9,7 +9,7 @@
             {
                 "name": "interface",
                 "category": "business_logic",
-                "asset": "helmets_app",
+                "asset": "helmets",
                 "inputs": [
                     {
                         "name": "video_in",
