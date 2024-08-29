@@ -28,10 +28,10 @@ class ObjectDetectionApp(p.node):
             input_frames = self.inputs.video_in.get()
             return input_frames
 
-        def process_media(self, image_list):
-            final_image_list = []
-            for img in image_list:
-                results = model(img, stream=True)
+        def process_media(self, frames):
+            final_frames = []
+            for frame in frames:
+                results = model(frame.image, stream=True)
 
                 for r in results:
                     boxes = r.boxes
@@ -80,9 +80,9 @@ class ObjectDetectionApp(p.node):
                         else:
                             txt = f"No helmet"
 
-                        cv2.putText(img, txt, coords[0], font, fontScale, color, thickness)
-                        final_image_list.append(img)
-            return final_image_list
+                        cv2.putText(frame.image, txt, coords[0], font, fontScale, color, thickness)
+                        final_frames.append(frame)
+            return final_frames
 
         def run(self):
             print('app starts')
@@ -91,8 +91,8 @@ class ObjectDetectionApp(p.node):
             while True:
                 input_frames = self.get_frames()
                 #image_list += [frame.image for frame in input_frames]
-                #image_list = self.process_media(image_list)
-                self.outputs.video_out.put(input_frames)
+                output_frames = self.process_media(input_frames)
+                self.outputs.video_out.put(output_frames)
 
 current_directory = os.getcwd()
 print(current_directory)
