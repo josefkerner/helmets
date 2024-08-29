@@ -85,6 +85,7 @@ class ObjectDetectionApp(p.node):
             return final_image_list
 
         def run(self):
+            print('app starts')
             log.info("Pytorch Yolov5s FP16 App starts")
             image_list = [] # An image queue
             while True:
@@ -92,9 +93,7 @@ class ObjectDetectionApp(p.node):
                 image_list += [frame.image for frame in input_frames]
                 image_list = self.process_media(image_list)
                 self.outputs.video_out.put(image_list)
-        def get_frames(self):
-            input_frames = self.inputs.video_in.get()
-            return input_frames
+
 
 try:
     app = ObjectDetectionApp()
