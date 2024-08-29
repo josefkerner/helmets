@@ -16,7 +16,7 @@ classNames = [
 
 from ultralytics import YOLO
 #model_path = '/panorama/app/best.pt'
-model_path = 'packages/858602710103-helmets-1.0/src/app/best.pt'
+model_path = 'helmets/packages/858602710103-helmets-1.0/src/app/best.pt'
 model = YOLO(model_path)
 
 class ObjectDetectionApp(p.node):
