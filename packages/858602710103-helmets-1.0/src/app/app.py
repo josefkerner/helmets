@@ -94,7 +94,8 @@ class ObjectDetectionApp(p.node):
                 image_list = self.process_media(image_list)
                 self.outputs.video_out.put(image_list)
 
-print(glob.glob('.'))
+current_directory = os.getcwd()
+print(current_directory)
 try:
     app = ObjectDetectionApp()
     app.run()
