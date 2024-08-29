@@ -90,9 +90,9 @@ class ObjectDetectionApp(p.node):
             image_list = [] # An image queue
             while True:
                 input_frames = self.get_frames()
-                image_list += [frame.image for frame in input_frames]
-                image_list = self.process_media(image_list)
-                self.outputs.video_out.put(image_list)
+                #image_list += [frame.image for frame in input_frames]
+                #image_list = self.process_media(image_list)
+                self.outputs.video_out.put(input_frames)
 
 current_directory = os.getcwd()
 print(current_directory)
