@@ -1,6 +1,6 @@
 import panoramasdk as p
 
-import logging
+import logging, os, glob
 from logging.handlers import RotatingFileHandler
 log = logging.getLogger('my_logger')
 log.setLevel(logging.DEBUG)
@@ -94,7 +94,7 @@ class ObjectDetectionApp(p.node):
                 image_list = self.process_media(image_list)
                 self.outputs.video_out.put(image_list)
 
-
+print(glob.glob('.'))
 try:
     app = ObjectDetectionApp()
     app.run()
