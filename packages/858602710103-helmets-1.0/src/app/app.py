@@ -62,6 +62,7 @@ class ObjectDetectionApp(p.node):
                             # print("Class name -->", classNames[cls])
 
                         # object details
+                        print(objects)
                         org = [x1, y1]
                         coords.append([x1, y1])
                     font = cv2.FONT_HERSHEY_SIMPLEX
