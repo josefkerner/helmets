@@ -4,7 +4,7 @@ import cv2, math
 
 
 from ultralytics import YOLO
-model = YOLO("/panorama/best.pt")
+model = YOLO("/panorama/yolov5s_half.pt")
 
 # start webcam
 cap = cv2.VideoCapture(0)

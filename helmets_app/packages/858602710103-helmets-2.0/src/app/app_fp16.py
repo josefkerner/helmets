@@ -41,7 +41,7 @@ class ObjectDetectionApp(p.node):
         self.model_batch_size = int(self.inputs.model_batch_size.get()) or 1
         self.pre_processing_output_size = 640
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.yolov5s = torch.jit.load('/panorama/yolov5s_model/yolov5s_half.pt', map_location=torch.device(self.device))
+        self.yolov5s = torch.jit.load('/panorama/yolov5s_model/yolov5s_half1.pt', map_location=torch.device(self.device))
         self.num_classes = 80
 
         # NMS: set the threshold and filtered class
