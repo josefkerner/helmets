@@ -4,7 +4,7 @@
         "packages": [
             {
                 "name": "858602710103::helmets",
-                "version": "1.0"
+                "version": "2.0"
             },
             {
                 "name": "panorama::abstract_rtsp_media_source",
@@ -20,7 +20,7 @@
                 "name": "camera_node",
                 "interface": "panorama::abstract_rtsp_media_source.rtsp_v1_interface",
                 "overridable": true,
-                "overrideMandatory": true,
+                "overrideMandatory": false,
                 "decorator": {
                     "title": "IP camera",
                     "description": "Choose a camera stream."
