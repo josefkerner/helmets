@@ -140,6 +140,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 RUN python3.8 -m pip install --no-cache-dir boto3
+WORKDIR /panorama
 COPY src /panorama
 
 #install opencv
