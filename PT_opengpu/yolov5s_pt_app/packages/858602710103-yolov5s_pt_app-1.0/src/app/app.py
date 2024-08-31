@@ -1,5 +1,5 @@
 import panoramasdk as p
-
+import numpy as np
 import logging, os, glob
 from logging.handlers import RotatingFileHandler
 log = logging.getLogger('my_logger')
@@ -16,6 +16,10 @@ classNames = [
     "helmet", "head", "person"
 ]
 
+from pydantic import BaseModel
+
+class Frame(BaseModel):
+    image: np.ndarray
 
 
 
@@ -37,7 +41,7 @@ class ObjectDetectionApp(p.node):
         def process_media(self, frames):
             final_frames = []
             for frame in frames:
-                results = model(frame.image, stream=True)
+                results = model(frame.image)
 
                 for r in results:
                     boxes = r.boxes
@@ -91,13 +95,37 @@ class ObjectDetectionApp(p.node):
                         final_frames.append(frame)
             return final_frames
 
+        def mock_input_frames(self):
+
+
+
+            frame_rate = 30
+            video_duration=1
+            width = 640
+            height = 480
+            frames = []
+            for _ in range(int(frame_rate * video_duration)):
+                frame = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
+                frames.append(frame)
+
+            return frames
+
+
         def run(self):
             print('app starts')
             log.info("Pytorch Yolov5s FP16 App starts")
-            image_list = [] # An image queue
             while True:
-                input_frames = self.get_frames()
-                #image_list += [frame.image for frame in input_frames]
+                try:
+                    input_frames = self.get_frames()
+                    print('got this frame number: ',len(input_frames))
+                    if len(input_frames) == 0:
+                        raise ValueError('no camera input')
+                    print(input_frames[0].image)
+                except Exception as e:
+                    input_frames = self.mock_input_frames()
+                    print('NO CAMERA INPUT')
+                    print(e)
+
                 output_frames = self.process_media(input_frames)
                 self.outputs.video_out.put(output_frames)
 
