@@ -148,3 +148,5 @@ COPY src/app/best.pt /panorama/best.pt
 RUN python3.8 -m pip install opencv-python-headless
 #install ultralytics yolov8
 RUN python3.8 -m pip install ultralytics
+RUN python3.8 -m pip install pydantic
+RUN python3.8 -m pip install numpy
