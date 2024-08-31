@@ -16,10 +16,10 @@ classNames = [
     "helmet", "head", "person"
 ]
 
-from pydantic import BaseModel
 
-class Frame(BaseModel):
-    image: np.ndarray
+class Frame:
+    def __init__(self, img):
+        self.image = img
 
 
 
@@ -98,7 +98,7 @@ class ObjectDetectionApp(p.node):
         def mock_input_frames(self):
 
 
-
+            outputs = []
             frame_rate = 30
             video_duration=1
             width = 640
@@ -106,9 +106,10 @@ class ObjectDetectionApp(p.node):
             frames = []
             for _ in range(int(frame_rate * video_duration)):
                 frame = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
-                frames.append(frame)
+                obj = Frame(img=frame)
+                outputs.append(obj)
 
-            return frames
+            return outputs
 
 
         def run(self):
