@@ -115,6 +115,7 @@ class ObjectDetectionApp(p.node):
             print('app starts')
             log.info("Pytorch Yolov5s FP16 App starts")
             while True:
+                input_frames = []
                 try:
                     input_frames = self.get_frames()
                     print('got this frame number: ',len(input_frames))
@@ -122,12 +123,13 @@ class ObjectDetectionApp(p.node):
                         raise ValueError('no camera input')
                     print(input_frames[0].image)
                 except Exception as e:
-                    input_frames = self.mock_input_frames()
+                    #input_frames = self.mock_input_frames()
                     print('NO CAMERA INPUT')
                     print(e)
 
-                output_frames = self.process_media(input_frames)
-                self.outputs.video_out.put(output_frames)
+                if len(input_frames) != 0:
+                    output_frames = self.process_media(input_frames)
+                    self.outputs.video_out.put(output_frames)
 
 current_directory = os.getcwd()
 print(current_directory)
