@@ -93,6 +93,8 @@ class ObjectDetectionApp(p.node):
 
                         cv2.putText(frame.image, txt, coords[0], font, fontScale, color, thickness)
                 final_frames.append(frame)
+
+            assert len(frames) == len(final_frames)
             return final_frames
 
         def mock_input_frames(self):
