@@ -141,8 +141,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libglib2.0-0 \
     && apt-get clean
 RUN python3.8 -m pip install --no-cache-dir boto3
 WORKDIR /panorama
-COPY src /panorama
-COPY src/app/best.pt /panorama/best.pt
+
 
 #install opencv
 RUN python3.8 -m pip install opencv-python-headless
@@ -150,3 +149,5 @@ RUN python3.8 -m pip install opencv-python-headless
 RUN python3.8 -m pip install ultralytics
 RUN python3.8 -m pip install pydantic
 RUN python3.8 -m pip install numpy
+COPY src /panorama
+COPY src/app/best.pt /panorama/best.pt
