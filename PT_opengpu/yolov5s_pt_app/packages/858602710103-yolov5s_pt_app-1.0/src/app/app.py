@@ -103,7 +103,6 @@ class ObjectDetectionApp(p.node):
             video_duration=1
             width = 640
             height = 480
-            frames = []
             for _ in range(int(frame_rate * video_duration)):
                 frame = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
                 obj = Frame(img=frame)
@@ -129,8 +128,13 @@ class ObjectDetectionApp(p.node):
                     print(e)
 
                 if len(input_frames) != 0:
-                    output_frames = self.process_media(input_frames)
-                    self.outputs.video_out.put(output_frames)
+                    try:
+                        output_frames = self.process_media(input_frames)
+                        self.outputs.video_out.put(output_frames)
+                    except Exception as e:
+                        print(e)
+                        print('could not process media')
+
 
 current_directory = os.getcwd()
 print(current_directory)
