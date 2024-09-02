@@ -24,7 +24,7 @@ class Frame:
 
 
 from ultralytics import YOLO
-model_path = '/panorama/yolov5s_model/yolov5s_half.pt'
+model_path = '/panorama/best.py'
 #model_path = 'helmets/packages/858602710103-helmets-2.0/src/app/yolov5s_half.pt'
 model = YOLO(model_path)
 
@@ -41,7 +41,7 @@ class ObjectDetectionApp(p.node):
         def process_media(self, frames):
             final_frames = []
             for frame in frames:
-                results = model(frame.image)
+                results = model(frame.image, stream=True)
 
                 for r in results:
                     boxes = r.boxes
