@@ -86,7 +86,7 @@ class Application(panoramasdk.node):
                 y2 = detection['y2']
                 x2 = detection['x2']
             # if text starts with 'Wearing helmet'
-            if txt.startswith('Wearing helmet'):
+            if txt.startswith('Helmet ON'):
                 # set color to green
                 color = (0, 255, 0)
                 font = cv2.FONT_HERSHEY_SIMPLEX
