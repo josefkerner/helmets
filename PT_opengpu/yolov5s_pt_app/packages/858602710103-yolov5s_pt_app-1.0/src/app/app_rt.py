@@ -11,7 +11,7 @@ import cv2
 import math
 import numpy as np
 import panoramasdk
-
+from typing import List, Dict
 from ultralytics import YOLO
 model_path = '/panorama/best.pt'
 #model_path = 'helmets/packages/858602710103-helmets-2.0/src/app/yolov5s_half.pt'
@@ -64,6 +64,36 @@ class Application(panoramasdk.node):
         finally:
             logger.info('Initialization complete.')
 
+    def postprocess_labels(self,img, detections: List[Dict]):
+        for detection in detections:
+            print(detection)
+
+            coords = [detection['x1'], detection['y1']]
+            if detection['label'] == "helmet":
+                # count heads
+                heads = [d for d in detections if d['label'] == 'head']
+                # if confidence is greater than 0.5
+                if detection['confidence'] > 0.5:
+                    # if there are no heads
+                    txt = f'Helmet ON - {detection["confidence"]}'
+                else:
+                    txt = 'No helmet'
+            else:
+                txt = 'No helmet'
+                x1 = detection['x1']
+                y1 = detection['y1']
+                y2 = detection['y2']
+                x2 = detection['x2']
+            # if text starts with 'Wearing helmet'
+            if txt.startswith('Wearing helmet'):
+                # set color to green
+                color = (0, 255, 0)
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                fontScale = 1
+                thickness = 2
+
+                cv2.putText(img, txt, coords, font, fontScale, color, thickness)
+
     def process_streams(self):
         """Processes one frame of video from one or more video streams."""
         frame_start = time.time()
@@ -104,8 +134,8 @@ class Application(panoramasdk.node):
 
     def process_media(self, stream):
         """Runs inference on a frame of video."""
-        image_data = preprocess(stream.image,self.MODEL_DIM)
-        logger.debug('Image data: {}'.format(image_data))
+        #image_data = preprocess(stream.image,self.MODEL_DIM)
+        #logger.debug('Image data: {}'.format(image_data))
         # Run inference
         inference_start = time.time()
         #inference_results = self.call({"data":image_data}, self.MODEL_NODE)
@@ -115,7 +145,7 @@ class Application(panoramasdk.node):
             self.inference_time_max = inference_time
         self.inference_time_ms += inference_time
         # Process results (classification)
-        self.process_results(stream)
+        self.process_results(stream.image)
 
     def process_results(self, stream):
         '''
@@ -124,12 +154,11 @@ class Application(panoramasdk.node):
         '''
 
         results = model(stream, stream=True)
+        objects = []
 
         for r in results:
             boxes = r.boxes
 
-            coords = []
-            objects = []
 
             for box in boxes:
                 # bounding box
@@ -146,34 +175,25 @@ class Application(panoramasdk.node):
                 # class name
                 cls = int(box.cls[0])
                 if cls > len(classNames):
-                    obj = "Unknown"
+                    label = "Unknown"
                     print("Class name -->", "Unknown")
                 else:
-                    obj = model.names[cls]
+                    label = model.names[cls]
+
+                    obj = {
+                        "label": label,
+                        "confidence": confidence,
+                        "x1": x1,
+                        "y1": y1,
+                        "x2": x2,
+                        "y2": y2
+                    }
                     objects.append(obj)
                     # print("Class name -->", classNames[cls])
 
                 # object details
-                print(objects)
-                org = [x1, y1]
-                coords.append([x1, y1])
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            fontScale = 1
-            color = (255, 0, 0)
-            thickness = 2
-            if len(coords) > 0:
-                if len(coords) > 1:
-                    distance = math.sqrt(
-                        (coords[0][0] - coords[1][0]) ** 2 + (coords[0][1] - coords[1][1]) ** 2)
-                else:
-                    distance = 'no'
 
-                if len(objects) == 1 and objects[0] == 'helmet':
-                    txt = f"Wears helmet"
-                else:
-                    txt = f"No helmet"
-
-                cv2.putText(stream, txt, coords[0], font, fontScale, color, thickness)
+        self.postprocess_labels(stream, objects)
 
     def put_metric_data(self, metric_name, metric_value):
         """Sends a performance metric to CloudWatch."""

@@ -1,17 +1,21 @@
 import cv2, math
 
 # start webcam
-#cap = cv2.VideoCapture(0)
-#cap.set(3, 640)
-#cap.set(4, 480)
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)
+cap.set(4, 480)
+
+'''
 
 ip_addr = '192.168.128.225'
 creds = 'root:trustsoft1!'
 cap = cv2.VideoCapture(f'rtsp://{creds}@{ip_addr}/live1s1.sdp')
 
+'''
+
 
 from ultralytics import YOLO
-model = YOLO("runs/detect/train6/weights/best.pt")
+model = YOLO("helmets_app/runs/detect/train6/weights/best.pt")
 #model = YOLO("models/hemletYoloV8_100epochs.pt")
 
 print(model.names)
@@ -24,6 +28,36 @@ classNames = [
 
 
 import cv2
+from typing import Dict, List
+
+def postprocess_labels(detections: List[Dict]):
+    for detection in detections:
+        print(detection)
+
+        coords = [detection['x1'], detection['y1']]
+        if detection['label'] == "helmet":
+            #count heads
+            heads = [d for d in detections if d['label'] == 'head']
+            #if confidence is greater than 0.5
+            if detection['confidence'] > 0.5:
+                #if there are no heads
+                txt= f'Helmet ON - {detection["confidence"]}'
+            else:
+                txt = 'No helmet'
+        else:
+            txt = 'No helmet'
+            x1 = detection['x1']
+            y1 = detection['y1']
+            y2 = detection['y2']
+            x2 = detection['x2']
+        #if text starts with 'Wearing helmet'
+        if txt.startswith('Wearing helmet'):
+            #set color to green
+            color = (0, 255, 0)
+
+            cv2.putText(img, txt, coords, font, fontScale, color, thickness)
+
+
 
 while True:
     success, img = cap.read()
@@ -53,10 +87,18 @@ while True:
             # class name
             cls = int(box.cls[0])
             if cls > len(classNames):
-                obj = "Unknown"
+                label = "Unknown"
                 print("Class name -->", "Unknown")
             else:
-                obj = model.names[cls]
+                label = model.names[cls]
+                obj = {
+                    "label": label,
+                    "confidence": confidence,
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2
+                }
                 objects.append(obj)
                 #print("Class name -->", classNames[cls])
 
@@ -67,18 +109,9 @@ while True:
         fontScale = 1
         color = (255, 0, 0)
         thickness = 2
-        if len(coords) > 0:
-            if len(coords) > 1:
-                distance = math.sqrt((coords[0][0] - coords[1][0])**2 + (coords[0][1] - coords[1][1])**2)
-            else:
-                distance = 'no'
+        postprocess_labels(objects)
 
-            if len(objects) == 1 and objects[0] == 'helmet':
-                txt = f"Wears helmet"
-            else:
-                txt = f"No helmet"
 
-            cv2.putText(img, txt, coords[0], font, fontScale, color, thickness)
 
     cv2.imshow('Webcam', img)
     if cv2.waitKey(1) == ord('q'):
