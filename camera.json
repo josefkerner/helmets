@@ -4,8 +4,8 @@
         {
             "name": "rama4",
             "Username": "root",
-            "Password": "moc_pekne",
-            "StreamUrl": "rtsp://192.168.128.225:554/live1s1.sdp",
+            "Password": "trustsoft1!":,
+            "StreamUrl": "rtsp://192.168.139.102:554/live1s1.sdp",
             "version": 1.0,
             "remove": false
         }

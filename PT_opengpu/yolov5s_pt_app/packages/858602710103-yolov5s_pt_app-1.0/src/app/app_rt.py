@@ -74,7 +74,7 @@ class Application(panoramasdk.node):
                 # count heads
                 heads = [d for d in detections if d['label'] == 'head']
                 # if confidence is greater than 0.5
-                if detection['confidence'] > 0.5:
+                if detection['confidence'] > 0.8:
                     # if there are no heads
                     txt = f'Helmet ON - {detection["confidence"]}'
                 else:
