@@ -1,6 +1,6 @@
 
 
-ip_addr = '19'
+ip_addr = '192.168.139.102:554'
 creds = 'root:trustsoft1!'
 import cv2
 cap = cv2.VideoCapture(f'rtsp://{creds}@{ip_addr}/live1s1.sdp')
